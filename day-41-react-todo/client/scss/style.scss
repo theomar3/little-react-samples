@@ -1,0 +1,38 @@
+@import 'reset';
+
+#page-title {
+  font-size: 1.5em;
+  font-family: sans-serif;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: red;
+}
+
+.container {
+  margin: 30px auto;
+  border: 1px solid gray;
+  max-width: 600px;
+  padding: 2%; }
+
+#item-input {
+  padding: 1.4%;
+  width: 80%; }
+
+#list {
+  overflow: auto; }
+
+.list li {
+  margin-top: 10px;
+  width: 80%;
+  background-color: #EEE;
+  padding: 1.4%;
+  border: 1px solid black;
+  float: left; }
+
+
+.delete-button {
+  max-width: 3.2%;
+  border: 1px solid gray;
+  padding: 2px;
+  float: right;
+  margin-right: 1%; }

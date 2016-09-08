@@ -1,0 +1,25 @@
+@import 'reset';
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 2em;
+  color: red;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.counter {
+  font-size: 2.5em;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+button {
+  display: inline-block;
+  padding: 5px;
+  margin-left: 2%;
+}

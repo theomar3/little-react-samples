@@ -1,0 +1,65 @@
+@import 'reset';
+
+.container {
+  max-width: 960px;
+}
+
+#title, #confirmed-guests {
+  font-size: 3em;
+  font-family: cursive;
+  color: green;
+  text-align: center;
+  margin-top: 20px;
+}
+
+#confirmed-guests {
+  font-size: 2em;
+  font-family: serif;
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-decoration: underline;
+}
+
+#form, #guest-list {
+  border: 1px solid blue;
+  padding: 30px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+#guest-list {
+  margin-top: 10px;
+  border: 2px solid lightBlue;
+
+}
+
+label {
+  padding: 10px;
+  // border: 1px solid black;
+  // margin-bottom: 5px;
+  display: block;
+}
+
+input {
+  padding: 10px;
+  display: block;
+  margin-bottom: 10px;
+  width: 40%;
+}
+
+#sign-in-button {
+  padding: 10px;
+  display: block;
+}
+
+ol {
+  padding-left: 40px;
+}
+
+li {
+  padding: 5px;
+}
+
+li:nth-child(odd) {
+  background-color: gray;
+}
