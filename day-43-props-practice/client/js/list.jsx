@@ -12,9 +12,10 @@ class List extends React.Component {
       list.push(<li key={i}>{i}</li>);
     }
 
-    <ul> {list} </ul>
 
     return(
+    <ul> {list} </ul>
+
     );
   }
 }

@@ -6,7 +6,10 @@ import PropsComponent from './js/props-component.jsx';
 import MovieProps from './js/movie-props.jsx';
 import List from './js/list.jsx';
 import Character from './js/character.jsx';
-import characterCreator from './js/characterCreator.js';
+import characterCreator from './js/character-creator.js';
+import FluxComponent from './js/samples/flux-component.jsx';
+import IsEven from './js/is-even.jsx';
+import FluxPractice from './js/flux-practice.jsx';
 
 // console.log('character creator' , characterCreator());
 
@@ -32,7 +35,10 @@ class App extends React.Component {
         <Character dude={character1}/>
         <Character dude={character2}/>
 
+        <FluxComponent />
 
+
+        <FluxPractice />
 
 
       </div>

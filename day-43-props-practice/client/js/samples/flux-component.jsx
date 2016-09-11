@@ -6,7 +6,7 @@ class FluxComponent extends React.Component {
   constructor() {
     super();
 
-    store.actions.doThing();
+    store.actions.addToCount();
 
     this.state = store.getState();
   }
@@ -19,7 +19,7 @@ class FluxComponent extends React.Component {
   }
 
   _onClick() {
-    store.actions.doThing()
+    store.actions.addToCount()
   }
 
   render() {

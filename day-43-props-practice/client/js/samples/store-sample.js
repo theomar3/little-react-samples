@@ -11,7 +11,6 @@ var state = {
 }
 
 var store = {
-//  changeEventName: 'customize-name', //customize name, like "todo-store-change"
   callbacks: [],
   actions: {}
 }
@@ -40,7 +39,7 @@ store.getState = function() {
 /* ========================================= */
 
 
-store.actions.doThing = function() {
+store.actions.addToCount = function() {
   state.count = state.count + 1;
   store.change();
 }

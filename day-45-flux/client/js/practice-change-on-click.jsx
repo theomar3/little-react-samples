@@ -1,4 +1,5 @@
 import React from 'react';
+import store from './practice-message-store.js';
 
 class PracticeChangeOnClick extends React.Component {
 
@@ -8,11 +9,21 @@ class PracticeChangeOnClick extends React.Component {
     this.state = {
       text: 'original text'
     }
+
+    store.addListener(state => {
+      this.setState({
+        text: state.currentMessage
+      })
+    });
+  }
+
+  _onClick() {
+    store.actions.changeMessage();
   }
 
   render() {
     return(
-      <div> {this.state.text} </div>
+      <div onClick={() => this._onClick()}> {this.state.text}</div>
     );
   }
 }

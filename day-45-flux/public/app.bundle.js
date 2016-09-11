@@ -66,6 +66,18 @@
 	
 	var _vowelCount2 = _interopRequireDefault(_vowelCount);
 	
+	var _clicker = __webpack_require__(176);
+	
+	var _clicker2 = _interopRequireDefault(_clicker);
+	
+	var _isEven = __webpack_require__(178);
+	
+	var _isEven2 = _interopRequireDefault(_isEven);
+	
+	var _reset = __webpack_require__(184);
+	
+	var _reset2 = _interopRequireDefault(_reset);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -74,7 +86,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	__webpack_require__(176);
+	__webpack_require__(180);
 	
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -92,6 +104,9 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(_header2.default, null),
+	        _react2.default.createElement(_clicker2.default, null),
+	        _react2.default.createElement(_isEven2.default, null),
+	        _react2.default.createElement(_reset2.default, null),
 	        _react2.default.createElement(_changeOnClick2.default, null),
 	        _react2.default.createElement(_vowelCount2.default, null)
 	      );
@@ -21723,13 +21738,270 @@
 /* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _clickerStore = __webpack_require__(177);
+	
+	var _clickerStore2 = _interopRequireDefault(_clickerStore);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Clicker = function (_React$Component) {
+	  _inherits(Clicker, _React$Component);
+	
+	  function Clicker() {
+	    _classCallCheck(this, Clicker);
+	
+	    var _this = _possibleConstructorReturn(this, (Clicker.__proto__ || Object.getPrototypeOf(Clicker)).call(this));
+	
+	    _this.state = _clickerStore2.default.copyState();
+	    return _this;
+	  }
+	
+	  _createClass(Clicker, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var self = this;
+	      _clickerStore2.default.addListener(function (state) {
+	        self.setState(state);
+	      });
+	    }
+	  }, {
+	    key: '_onClick',
+	    value: function _onClick() {
+	      _clickerStore2.default.actions.increment();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var self = this;
+	
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { onClick: function onClick() {
+	              self._onClick();
+	            } },
+	          'Click me: ',
+	          this.state.count
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Clicker;
+	}(_react2.default.Component);
+	
+	module.exports = Clicker;
+
+/***/ },
+/* 177 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	//If you will be doing any ajax calls in the actions, uncomment this.
+	//var $ = require('jquery');
+	
+	/* ========================================= */
+	/* Store Setup                               */
+	/* ========================================= */
+	
+	//customize to whatever makes sense for your state. For the clicker, we only need the count.
+	var state = {
+	  count: 0
+	};
+	
+	//stores will need to keep track of listeners for changes and actions.
+	var store = {
+	  listeners: [], //for keeping tracking of components listening for change events
+	  actions: {} //for actions, see below
+	};
+	
+	//What a component will call so it can pass a callback/listener for change events
+	store.addListener = function (listener) {
+	  store.listeners.push(listener);
+	};
+	
+	//Makes a copy of the state. This is to protect the state that is managed by the store.
+	store.copyState = function () {
+	  return {
+	    count: state.count
+	  };
+	};
+	
+	//To be called any time the state is changed.
+	function changed() {
+	  console.log('store changed', state);
+	  var copiedState = store.copyState();
+	  store.listeners.forEach(function (listener) {
+	    listener(copiedState);
+	  });
+	}
+	
+	/* ========================================= */
+	/* Actions                                   */
+	/* ========================================= */
+	
+	//Action to increment the state
+	store.actions.increment = function () {
+	  state.count = state.count + 1; //change the state
+	  changed(); //since the state just got changed, call the change function
+	};
+	
+	module.exports = store;
+
+/***/ },
+/* 178 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _practiceClickerStore = __webpack_require__(179);
+	
+	var _practiceClickerStore2 = _interopRequireDefault(_practiceClickerStore);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var IsEven = function (_React$Component) {
+	  _inherits(IsEven, _React$Component);
+	
+	  function IsEven() {
+	    _classCallCheck(this, IsEven);
+	
+	    var _this = _possibleConstructorReturn(this, (IsEven.__proto__ || Object.getPrototypeOf(IsEven)).call(this));
+	
+	    _this.state = _practiceClickerStore2.default.copyState();
+	
+	    _practiceClickerStore2.default.addListener(function (state) {
+	      _this.setState(state);
+	    });
+	    return _this;
+	  }
+	
+	  _createClass(IsEven, [{
+	    key: '_onClick',
+	    value: function _onClick() {
+	      _practiceClickerStore2.default.actions.reset();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+	
+	      var evenValue = 'Yes';
+	      if (this.state.clickNumber % 2 !== 0) {
+	        evenValue = "no";
+	      }
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          ' Is the click number even? ',
+	          evenValue,
+	          ' '
+	        ),
+	        _react2.default.createElement(
+	          'button',
+	          { onClick: function onClick() {
+	              return _this2._onClick();
+	            } },
+	          ' Reset clicks to zero'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return IsEven;
+	}(_react2.default.Component);
+	
+	module.exports = IsEven;
+
+/***/ },
+/* 179 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	var state = {
+	  clickNumber: 0
+	};
+	
+	var store = {
+	  listeners: [],
+	  actions: {}
+	};
+	
+	store.addListener = function (listener) {
+	  store.listeners.push(listener);
+	};
+	
+	store.copyState = function () {
+	  return {
+	    clickNumber: state.clickNumber
+	  };
+	};
+	
+	function changed() {
+	  var copiedState = store.copyState();
+	  store.listeners.forEach(function (listener) {
+	    listener(copiedState);
+	  });
+	}
+	
+	//Actions//
+	
+	store.actions.increment = function () {
+	  state.clickNumber = state.clickNumber + 1;
+	  changed();
+	};
+	
+	store.actions.reset = function () {
+	  state.clickNumber = 0;
+	  changed();
+	};
+	
+	module.exports = store;
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(177);
+	var content = __webpack_require__(181);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(179)(content, {});
+	var update = __webpack_require__(183)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -21746,10 +22018,10 @@
 	}
 
 /***/ },
-/* 177 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(178)();
+	exports = module.exports = __webpack_require__(182)();
 	// imports
 	
 	
@@ -21760,7 +22032,7 @@
 
 
 /***/ },
-/* 178 */
+/* 182 */
 /***/ function(module, exports) {
 
 	/*
@@ -21816,7 +22088,7 @@
 
 
 /***/ },
-/* 179 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -22066,6 +22338,64 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
+
+/***/ },
+/* 184 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _practiceClickerStore = __webpack_require__(179);
+	
+	var _practiceClickerStore2 = _interopRequireDefault(_practiceClickerStore);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Reset = function (_React$Component) {
+	  _inherits(Reset, _React$Component);
+	
+	  function Reset() {
+	    _classCallCheck(this, Reset);
+	
+	    return _possibleConstructorReturn(this, (Reset.__proto__ || Object.getPrototypeOf(Reset)).apply(this, arguments));
+	  }
+	
+	  _createClass(Reset, [{
+	    key: '_onClick',
+	    value: function _onClick() {
+	      _practiceClickerStore2.default.actions.reset();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+	
+	      return _react2.default.createElement(
+	        'button',
+	        { onClick: function onClick() {
+	            return _this2._onClick();
+	          } },
+	        ' Click to reset clicker '
+	      );
+	    }
+	  }]);
+	
+	  return Reset;
+	}(_react2.default.Component);
+	
+	module.exports = Reset;
 
 /***/ }
 /******/ ]);

@@ -47,4 +47,9 @@ store.actions.increment = function() {
   changed(); //since the state just got changed, call the change function
 }
 
+function reset() {
+  state.clickNumber = 0;
+  changed();
+}
+
 module.exports = store;
